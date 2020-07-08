@@ -1,9 +1,10 @@
 //This consists of the networking part of blockchain
 
 //Step1: Install nodemon to automate the nodes 
+//Using nodemon to restart the servers or nodes on their own check the scripts section in package.json file
 //Step2: Install and export express framework to activate the server
-//Perform packaging procedure using command npm init (Ideally to be done during project startup)
-var expressFramework = require('express')
+//Perform packaging procedure using command npm init (Ideally should be done during project startup)
+var expressFramework = require('express')//Express is a framework of javascript, which helps in building servers or ports at a higher level by creating the endpoints
 var bitcoinApp = new expressFramework()
 
 var port = process.argv[2];
@@ -13,7 +14,7 @@ var Blockchain = require("./blockchain")//embed blockchain.js
 //so we are renaming the functionality as bitcoin
 var bitcoin = new Blockchain()
 
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');//Install body-parser npm
 bitcoinApp.use(bodyParser.json());
 bitcoinApp.use(bodyParser.urlencoded({extended: false}));
 
@@ -21,6 +22,8 @@ bitcoinApp.get('/',function(req,res){
     res.send("this is the node of miner : " +port);
 });
 
+//This is to see the public ledger 
+//Note: Add chrome plugin JSON formatter to get output in JSON format
 bitcoinApp.get('/blockchain',function(req,res){
     res.send(bitcoin);//public ledger  
 });
@@ -192,6 +195,7 @@ bitcoinApp.post('/register-broadcast-node',function(req,res){
     });
 });
 
+//step1: node sync: register one node at one other node
 bitcoinApp.post('/register-node',function(req,res){
     const newNodeUrl = req.body.newNodeUrl;
     const nodeNotAlreadyPresent = bitcoin.networkNodes.indexOf(newNodeUrl) == -1;
@@ -247,6 +251,7 @@ bitcoinApp.get('/block-explorer',function(req,res){
     res.sendFile('./block-explorer/index.html',{ root: __dirname});
 });
 
+//port parameter : to make the ports dynamic
 bitcoinApp.listen(port, function(){
     console.log("Miner is active on this port :"+ port);
 });
