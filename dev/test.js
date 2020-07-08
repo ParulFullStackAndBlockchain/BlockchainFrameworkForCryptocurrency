@@ -25,9 +25,9 @@ var bitcoin = new Blockchain()
 //TestCase:3 - Check the output for genesis block
 //console.log(bitcoin);
 
-//TestCase:4
-//here after executing the nonce value generated is 221673, also time can also be evaluated
-//in which the nonce value is generated using stopwatch
+//TestCase:4 - Testing proofOfWork function by generating nonce
+//Note: Generating nonce value and time in which the nonce value is generated using stopwatch can be used as a simulation of real time scenario 
+//where miners compete for generating the nonce value to generate block and get rewards
 //var previousBlockhash = "37269kjadkjasd2y3rjhasjdhas";
 //var currentBlockdata = {
     //"sender":"revanth",

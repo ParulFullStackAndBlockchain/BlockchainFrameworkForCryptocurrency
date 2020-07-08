@@ -1,5 +1,6 @@
 //This consists of core functionality of blockchain
 //OR core functionality of a decentralized application in Javascript
+
 var sha256 = require("sha256");//sha256 package is installed to do hashing
 const currentNodeUrl = process.argv[3];
 const uuid = require('uuid/v4');
@@ -49,7 +50,7 @@ Blockchain.prototype.getLastBlock = function(){
     return this.chain[this.chain.length - 1];
 }
 
-//This function is to create and fetch current block hash
+//This function is used twice once for creating nonce and then to get the hash value or encrypted value of complete block
 //Note: previousblockhash for first block : any value can be assumed for previousblockhash as it is not created dynamically,
 //currentBlockdata is in JSON format as transactions information coming from frontend is in JSON format,
 //nonce is an integer
@@ -59,8 +60,9 @@ Blockchain.prototype.hashGenerator = function(previousBlockhash,currentBlockdata
     return hash; //current block hash
 }
 
-//This function is to Generate nonce value by solving a cryptographic puzzle
-//Note: previousblockhash for first block : any value can be assumed for previousblockhash as it is not created dynamically,
+//This function is to Generate nonce value by solving a cryptographic puzzle. 
+//Proof of work is used for various purposes => 1.)nonce, 2.)to create hash of block which establishes security, 
+//3.)provides equal opportunities to the miners to generate or mine the block using the skill set of cracking the cryotographic puzzle
 //currentBlockdata is nothing but transactions
 Blockchain.prototype.proofOfWork = function(previousBlockhash,currentBlockdata){
     let nonce = 0;

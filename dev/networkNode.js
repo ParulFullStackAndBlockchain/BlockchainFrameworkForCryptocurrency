@@ -1,11 +1,14 @@
 //This consists of the networking part of blockchain
 
+//Step1: Install nodemon to automate the nodes 
+//Step2: Install and export express framework to activate the server
+//Perform packaging procedure using command npm init (Ideally to be done during project startup)
 var expressFramework = require('express')
 var bitcoinApp = new expressFramework()
 
 var port = process.argv[2];
 const rp = require('request-promise');
-var Blockchain = require("./blockchain")
+var Blockchain = require("./blockchain")//embed blockchain.js 
 //We are going to use this blockchain application as a cryptocurrency application 
 //so we are renaming the functionality as bitcoin
 var bitcoin = new Blockchain()
