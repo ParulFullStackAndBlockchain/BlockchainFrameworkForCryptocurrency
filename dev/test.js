@@ -6,12 +6,12 @@ var Blockchain = require("./blockchain")
 //so we are renaming the functionality as bitcoin
 var bitcoin = new Blockchain()
 
-//TestCase:1
+//TestCase:1 - Craeting a new block and a new transaction to understand the output of console.log(bitcoin)
 //var newBlock = bitcoin.createNewBlock("fhkfhfjf789vnkj","ffdhsng806vko",7000);
 //var newTransaction = bitcoin.createNewTransaction("parul","ravi",5000);
 //console.log(bitcoin);
 
-//TestCase:2
+//TestCase:2 - Testing hash
 //var previousBlockhash = "92yhdkasjdh928ry95";
 //var nonce = 823498273;
 //var currentBlockdata = {
@@ -22,8 +22,7 @@ var bitcoin = new Blockchain()
 //var hash = bitcoin.hashGenerator(previousBlockhash,currentBlockdata,nonce);
 //console.log(hash);
 
-//TestCase:3
-// to check the genesis block
+//TestCase:3 - Check the output for genesis block
 //console.log(bitcoin);
 
 //TestCase:4

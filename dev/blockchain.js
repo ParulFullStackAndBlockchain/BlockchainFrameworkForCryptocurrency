@@ -1,16 +1,20 @@
 //This consists of core functionality of blockchain
-var sha256 = require("sha256");
+//OR core functionality of a decentralized application in Javascript
+var sha256 = require("sha256");//sha256 package is installed to do hashing
 const currentNodeUrl = process.argv[3];
 const uuid = require('uuid/v4');
 
 function Blockchain(){
+    //parent function constructor
     this.chain = [];
     this.pendingTransactions = []; 
     this.networkNodes = [];
     this.currentNodeUrl = currentNodeUrl;
-    this.createNewBlock("0","0",0);//genesis  
+    this.createNewBlock("0","0",0);//genesis block:there will be no transactions,any value can be assumed for previousblockhash here "0" is considered
 }
 
+//this function will create blocks 
+//<name of constructor>.prototype.<name of child function>
 Blockchain.prototype.createNewBlock = function(hash,previousBlockHash,nonce){
     const newBlock = {
         index:this.chain.length+1,
@@ -26,6 +30,7 @@ Blockchain.prototype.createNewBlock = function(hash,previousBlockHash,nonce){
     return newBlock;
 }
 
+//this function is to create new a transaction
 Blockchain.prototype.createNewTransaction = function(senderCode,recepientCode,amount){
     const newTransaction = {
         sender:senderCode,
@@ -44,16 +49,19 @@ Blockchain.prototype.getLastBlock = function(){
     return this.chain[this.chain.length - 1];
 }
 
-// nonce is an integer, currentBlockdata is in JSON format as transactions information coming 
-//from frontend is in JSON format
+//This function is to create and fetch current block hash
+//Note: previousblockhash for first block : any value can be assumed for previousblockhash as it is not created dynamically,
+//currentBlockdata is in JSON format as transactions information coming from frontend is in JSON format,
+//nonce is an integer
 Blockchain.prototype.hashGenerator = function(previousBlockhash,currentBlockdata,nonce){
     var dataAsString = previousBlockhash + nonce.toString() + JSON.stringify(currentBlockdata);
     var hash = sha256(dataAsString);
-    return hash;
+    return hash; //current block hash
 }
 
-//here we are Generating nonce value by solving a cryptographic puzzle
-//Also here currentBlockdata is nothing but transactions
+//This function is to Generate nonce value by solving a cryptographic puzzle
+//Note: previousblockhash for first block : any value can be assumed for previousblockhash as it is not created dynamically,
+//currentBlockdata is nothing but transactions
 Blockchain.prototype.proofOfWork = function(previousBlockhash,currentBlockdata){
     let nonce = 0;
     var hash = this.hashGenerator(previousBlockhash,currentBlockdata,nonce);
