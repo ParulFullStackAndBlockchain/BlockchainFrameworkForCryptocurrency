@@ -42,6 +42,7 @@ Blockchain.prototype.createNewTransaction = function(senderCode,recepientCode,am
     return newTransaction;
 }
 
+//When transaction is received in one node/miner it is first added to the pending transactions list
 Blockchain.prototype.addTransactionToPendingTransactions = function(transactionObj){
     this.pendingTransactions.push(transactionObj);
 }

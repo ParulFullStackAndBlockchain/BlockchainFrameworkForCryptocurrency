@@ -8,13 +8,13 @@ var expressFramework = require('express')//Express is a framework of javascript,
 var bitcoinApp = new expressFramework()
 
 var port = process.argv[2];
-const rp = require('request-promise');
+const rp = require('request-promise');//Install request-promise and request package
 var Blockchain = require("./blockchain")//embed blockchain.js 
 //We are going to use this blockchain application as a cryptocurrency application 
 //so we are renaming the functionality as bitcoin
 var bitcoin = new Blockchain()
 
-const bodyParser = require('body-parser');//Install body-parser npm
+const bodyParser = require('body-parser');//Install body-parser npm 
 bitcoinApp.use(bodyParser.json());
 bitcoinApp.use(bodyParser.urlencoded({extended: false}));
 
@@ -28,6 +28,7 @@ bitcoinApp.get('/blockchain',function(req,res){
     res.send(bitcoin);//public ledger  
 });
 
+//SETUP TRANSACTION RECEPTION MECHANISM FROM ONE SENDER TO ONE NODE/MINER
 bitcoinApp.post('/transaction',function(req,res){
     const newTransaction = req.body;
     bitcoin.addTransactionToPendingTransactions(newTransaction);
@@ -165,10 +166,13 @@ bitcoinApp.get('/consensus',function(req,res){
         });       
 });
 
+//step2: node sync
 bitcoinApp.post('/register-broadcast-node',function(req,res){
     const newNodeUrl = req.body.newNodeUrl;
+    //first add 3004 to 3001
     if(bitcoin.networkNodes.indexOf(newNodeUrl) == -1) bitcoin.networkNodes.push(newNodeUrl);
 
+    //broadcast to other nodes from 3001
     const regNodesPromises = [];
     bitcoin.networkNodes.forEach(networkNodeUrl => {
         const requestOptions = {
@@ -180,6 +184,7 @@ bitcoinApp.post('/register-broadcast-node',function(req,res){
         regNodesPromises.push(rp(requestOptions));
     });
 
+    //introduce other nodes in the network to new node : 3002 and 3003 to new node at 3004
     Promise.all(regNodesPromises)
     .then(data => {
         const bulkRegistrationOptions = {
@@ -210,8 +215,10 @@ bitcoinApp.post('/register-node',function(req,res){
     }
 });
 
+//step3: node sync: Send array of addresses to the new node: newnode: 3004 existing node: 3001
 bitcoinApp.post('/register-nodes-bulk',function(req,res){
     const allNetworkNodes = req.body.allNetworkNodes;
+    //["http://localhost:3002","http://localhost:3003"]
     allNetworkNodes.forEach(networkNodeUrl =>{
         const nodeNotAlreadyPresent = bitcoin.networkNodes.indexOf(networkNodeUrl) == -1;
         const notCurrentNode = bitcoin.currentNodeUrl !== networkNodeUrl;
