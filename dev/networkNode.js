@@ -236,6 +236,7 @@ bitcoinApp.post('/register-nodes-bulk',function(req,res){
     res.json({note : 'Bulk registration successful'});
 });
 
+//GIVE BACK BLOCK INFO BASED ON HASH CODE 
 bitcoinApp.get('/block/:blockHash',function(req,res){
     const blockHash = req.params.blockHash;
     const correctBlock = bitcoin.getBlock(blockHash);
@@ -244,7 +245,7 @@ bitcoinApp.get('/block/:blockHash',function(req,res){
     });
 });
 
-// get transaction by transactionId
+//GIVE BACK TRANSACTION INFO BASED ON TRANSACTIONID
 bitcoinApp.get('/transaction/:transactionId', function(req, res) {
 	const transactionId = req.params.transactionId;
 	const trasactionData = bitcoin.getTransaction(transactionId);
@@ -254,7 +255,7 @@ bitcoinApp.get('/transaction/:transactionId', function(req, res) {
 	});
 });
 
-// get address by address
+//this API is used to get info to display a prototype of bank statement of an account holder
 bitcoinApp.get('/address/:address', function(req, res) {
 	const address = req.params.address;
 	const addressData = bitcoin.getAddressData(address);

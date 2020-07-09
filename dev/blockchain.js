@@ -3,7 +3,7 @@
 
 var sha256 = require("sha256");//sha256 package is installed to do hashing
 const currentNodeUrl = process.argv[3];
-const uuid = require('uuid/v4');
+const uuid = require('uuid/v4');//install UUID package
 
 function Blockchain(){
     //parent function constructor
