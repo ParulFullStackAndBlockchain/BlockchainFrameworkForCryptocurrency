@@ -35,10 +35,12 @@ bitcoinApp.post('/transaction',function(req,res){
     res.json ({note: 'Transaction will be added in the next block'});
 });
 
+//SETUP TRANSACTION RECEPTION MECHANISM FROM ONE SENDER TO ONE NODE/MINER THEN BROADCAST IT TO THE NETWORK
 bitcoinApp.post('/transaction/broadcast',function(req,res){
+    //STEP1: UPDATE THE TRANSACTION AT THIS NODE example: 3003
     const newTransaction = bitcoin.createNewTransaction(req.body.sender, req.body.recipient, req.body.amount);
     bitcoin.addTransactionToPendingTransactions(newTransaction);
-    
+    //STEP2: SEND TO ALL THE OTHER NODES (BROADCAST FUNCTIONALITY)
     const requestPromises = [];
     bitcoin.networkNodes.forEach(networkNodeUrl => {
         const requestOptions = {
@@ -58,7 +60,7 @@ bitcoinApp.post('/transaction/broadcast',function(req,res){
 });
 
 bitcoinApp.get('/mine',function(req,res){
-
+    //STEP1: MINER TO CREATE THE BLOCK
     const lastBlock = bitcoin.getLastBlock();
     const previousBlockHash = lastBlock['hash'];
     const currentBlockData = {
@@ -69,6 +71,7 @@ bitcoinApp.get('/mine',function(req,res){
     const blockHash = bitcoin.hashGenerator(previousBlockHash,currentBlockData,nonce);
     const newBlock = bitcoin.createNewBlock(blockHash, previousBlockHash,nonce);
 
+    //STEP2: MINER TO BROADCAST THE BLOCK
     const requestPromises = [];
     bitcoin.networkNodes.forEach(networkNodeUrl => {
         const requestOptions = {
@@ -80,6 +83,7 @@ bitcoinApp.get('/mine',function(req,res){
         requestPromises.push(rp(requestOptions));
     });
 
+    //STEP3: MINER TO GET THE REWARD : CREATING A TRANSACTION OF THE REWARD
     Promise.all(requestPromises)
     .then(data => {
         const requestOptions = {
@@ -102,6 +106,7 @@ bitcoinApp.get('/mine',function(req,res){
     });
 });
 
+//BEFORE ADDING A BLOCK... THINK ONCE!
 bitcoinApp.post('/receive-new-block',function(req,res){
     const newBlock = req.body.newBlock;
     const lastBlock = bitcoin.getLastBlock();
