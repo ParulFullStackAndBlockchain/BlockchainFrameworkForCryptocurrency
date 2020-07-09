@@ -3,19 +3,27 @@
 
 <head>
 	<title>Block Explorer</title>
+	<!-- Angular is a javascript framework which is developed to build single page web application -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<!-- In bootstrap there are built in themes provided you just need to use them => 
+		no need to explicitly work on html and css code -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 
+<!-- Angular app ng-app="BlockExplorer" added in the body element -->
 <body ng-app="BlockExplorer">
+	<!-- Adding bootstrap inside the body element, container is the default class of bootstrap, 
+		inside that 3 rows are added -->
 	<div class="container" ng-controller="MainController">
+		<!-- to display the title -->
 		<div class="row">
 			<div class="col-md-8 offset-md-2">
 				<h1 id="page-title">Block Explorer</h1>
 			</div>
 		</div>
+		<!-- to take input from user -->
 		<div class="row">
 			<div class="col-md-6 offset-md-3">
 				<form ng-submit="search(searchValue)">
@@ -40,6 +48,7 @@
 				</form>
 			</div>
 		</div>
+		<!-- consists of table that is to display information received from the backend(=> the blockchain network) -->
 		<div class="row">
 			<div class="col-md-10 offset-md-1">
 

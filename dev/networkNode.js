@@ -127,8 +127,9 @@ bitcoinApp.post('/receive-new-block',function(req,res){
     }
 });
 
-bitcoinApp.get('/consensus',function(req,res){
+bitcoinApp.get('/consensus',function(req,res){//NODE-3 LOCALHOST:3003
 
+    //STEP1:- GET ALL THE CHAINS AT EVERY MINER 
     const requestPromises = [];
     bitcoin.networkNodes.forEach(networkNodeUrl => {
         const requestOptions = {
@@ -139,6 +140,9 @@ bitcoinApp.get('/consensus',function(req,res){
         requestPromises.push(rp(requestOptions));
     });
        
+        //STEP2: FIND THE LONGEST CHAIN AMONG THE NETWORK
+
+        //STEP3: VALIDATE THE LONGEST CHAIN. MAKE SURE IT IS LEGIT
         Promise.all(requestPromises)
         .then(blockchains => {
             const currentChainLength = bitcoin.chain.length;
@@ -259,6 +263,7 @@ bitcoinApp.get('/address/:address', function(req, res) {
 	});
 });
 
+//THIS IS FOR HOSTING THE INDEX.HTML FILE ON ALL THE MINERS 
 bitcoinApp.get('/block-explorer',function(req,res){
     res.sendFile('./block-explorer/index.html',{ root: __dirname});
 });
